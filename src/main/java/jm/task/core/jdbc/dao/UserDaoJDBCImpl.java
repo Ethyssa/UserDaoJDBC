@@ -1,30 +1,29 @@
 package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.util.Util;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private Connection connection;
+    private final Util util = new Util();
+    private final Connection connection;
     private static final String CREATE_SQL =
             "CREATE TABLE IF NOT EXISTS users (" +
             "id INT PRIMARY KEY AUTO_INCREMENT," +
             "name VARCHAR(50) NOT NULL," +
             "last_name VARCHAR(50) NOT NULL," +
             "age INT NOT NULL)";
-    private static final String DROP_SQL =
-            "DROP TABLE IF EXISTS users";
-    private static final String SAVE_SQL =
-            "INSERT INTO users (name, last_name, age) values (?, ?, ?)";
-    private static final String DELETE_SQL =
-            "DELETE FROM users WHERE id = ?";
-    private static final String FIND_ALL_SQL =
-            "SELECT id, name, last_name, age FROM users";
+    private static final String DROP_SQL = "DROP TABLE IF EXISTS users";
+    private static final String SAVE_SQL = "INSERT INTO users (name, last_name, age) values (?, ?, ?)";
+    private static final String DELETE_SQL = "DELETE FROM users WHERE id = ?";
+    private static final String FIND_ALL_SQL = "SELECT id, name, last_name, age FROM users";
     private static final String CLEAN_SQL = "TRUNCATE TABLE users";
-    public UserDaoJDBCImpl(Connection connection) {
-        this.connection = connection;
+
+    public UserDaoJDBCImpl() {
+        this.connection = util.getConnection();
     }
     public void createUsersTable() {
         try (Statement statement = connection.createStatement()) {
@@ -88,5 +87,9 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLException e) {
             throw new RuntimeException("Ошибка при очистке таблицы users.\n", e);
         }
+    }
+
+    public Util getUtil() {
+        return util;
     }
 }

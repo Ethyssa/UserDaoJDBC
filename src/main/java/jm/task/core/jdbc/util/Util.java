@@ -20,4 +20,14 @@ public class Util {
         }
         return connection;
     }
+
+    public void close() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException("Ошибка при закрытии соединения.\n", e);
+            }
+        }
+    }
 }
