@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private final Util util = new Util();
-    private final Connection connection;
+    private final Connection connection = new Util().getConnection();
     private static final String CREATE_SQL =
             "CREATE TABLE IF NOT EXISTS users (" +
             "id INT PRIMARY KEY AUTO_INCREMENT," +
@@ -22,9 +21,6 @@ public class UserDaoJDBCImpl implements UserDao {
     private static final String FIND_ALL_SQL = "SELECT id, name, last_name, age FROM users";
     private static final String CLEAN_SQL = "TRUNCATE TABLE users";
 
-    public UserDaoJDBCImpl() {
-        this.connection = util.getConnection();
-    }
     public void createUsersTable() {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(CREATE_SQL);
@@ -87,9 +83,5 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLException e) {
             throw new RuntimeException("Ошибка при очистке таблицы users.\n", e);
         }
-    }
-
-    public Util getUtil() {
-        return util;
     }
 }
