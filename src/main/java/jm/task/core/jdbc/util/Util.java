@@ -19,7 +19,7 @@ public class Util {
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "1234";
 
-    private static SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     public Connection getConnection() {
         try {
